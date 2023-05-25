@@ -37,7 +37,7 @@ app.use( express.json() );
 
 // Rutas
 app.use( '/api/auth', require('./routes/auth') );
-app.use('/propiedades', require('./routes/propiedades'))
+app.use('/viviendas', require('./routes/viviendas'))
 
 // Manejar demás rutas
 // app.get('*', (req,res) => {
