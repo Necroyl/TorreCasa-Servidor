@@ -28,8 +28,8 @@ const ViviendaSchema = Schema({
         type: Number,
         required: true
     },
-    foto: {
-        type: Object,
+    fotos: {
+        type: [String],
         required: true
     },
     propietario: {

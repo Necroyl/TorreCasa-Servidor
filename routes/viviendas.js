@@ -1,18 +1,20 @@
 const express = require('express');
+const fs = require('fs');
 const multer = require("multer");
 const Vivienda = require(__dirname + '/../models/Vivienda');
 
 // Librería multer para subida de ficheros
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "public/uploads");
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + "_" + file.originalname);
-    },
-});
+// let storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, "public/uploads");
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, Date.now() + "_" + file.originalname);
+//     },
+// });
 
-let upload = multer({ storage: storage });
+// let upload = multer({ storage: storage });
+
 
 let router = express.Router();
 
@@ -25,15 +27,14 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-    Vivienda.fin({_id: req.params['id']}).then( vivienda => {
+    Vivienda.findById({_id: req.params['id']}).then( vivienda => {
         res.status(200).send({ ok: true, vivienda });
     }).catch( error => {
         res.status(400).send({ ok:false, error: 'No se ha encontrado la vivienda' })
     })
 })
 
-router.post('/nueva', upload.array('foto'), (req, res) =>{
-    console.log(req.files);
+router.post('/nueva', (req, res) =>{
     try{
         let vivienda = new Vivienda({
             direccion: req.body.direccion,
@@ -43,12 +44,9 @@ router.post('/nueva', upload.array('foto'), (req, res) =>{
             lng: req.body.lng,
             descripcion: req.body.descripcion,
             precio: req.body.precio,
-            foto: req.body.foto,
+            fotos: req.body.fotos,
             propietario: req.body.propietario.uid
         })
-
-
-        if (req.files && req.files.filename) vivienda.foto = req.files.filename;
 
         vivienda.save().then( () => {
             return res.status(200).json({
