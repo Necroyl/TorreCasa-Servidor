@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { crearUsuario, revalidarToken, loginUsuario } = require('../controllers/auth');
+const { crearUsuario, revalidarToken, loginUsuario, cambiarEmail, cambiarPass } = require('../controllers/auth');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
@@ -20,6 +20,18 @@ router.post('/', [
     check('password', 'La contraseña debe tener más de 6 caracteres').isLength({min:6}),
     validarCampos
 ], loginUsuario);
+
+// Cambiar email
+router.post('/newEmail', [
+    check('email', 'Debe tener formato correcto').isEmail(),
+    validarCampos
+], cambiarEmail)
+
+// Cambiar pass
+router.post('/newPass', [
+    check('password', 'La contraseña debe tener más de 6 caracteres').isLength({min:6}),
+    validarCampos
+], cambiarPass)
 
 // Validar token
 router.get('/renew', validarJWT, revalidarToken);

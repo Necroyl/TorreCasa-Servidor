@@ -40,7 +40,6 @@ const crearUsuario = async(req, res = response) => {
         })
 
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             ok: false,
             msg: 'Por favor hable con el administrador',
@@ -85,7 +84,6 @@ const loginUsuario = async(req, res = response) => {
         });
 
     } catch (error) {
-        console.error(error);
         return res.json({
             ok: false,
             msg: 'Por favor hable con el administrador'
@@ -112,8 +110,63 @@ const revalidarToken = async(req, res = response) => {
     })
 }
 
+const cambiarEmail = async(req, res = response ) => {
+    const {email, uid} = req.body;
+
+    try {
+        // TODO buscar si algún usuario tiene el mismo email?
+        const dbUser = await Usuario.findOne({ uid });
+        dbUser.email = email;
+        dbUser.save();
+
+        return res.json({
+            ok: true,
+            msg: 'Email cambiado'
+        })
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: 'No se ha podido cambiar el correo'
+        })
+    }
+}
+
+const cambiarPass = async( req, res = response ) => {
+    const {password, uid} = req.body;
+
+    try{
+        const dbUser = await Usuario.findOne({ uid });
+
+        console.log(dbUser);
+
+        const validPassword = bcrypt.compareSync( password, dbUser.password );
+
+        if( validPassword ){
+            throw Error;
+        }
+
+        const salt = bcrypt.genSaltSync();
+        dbUser.password = bcrypt.hashSync( password, salt );
+        dbUser.save();
+
+        console.log(dbUser);
+
+        return res.json({
+            ok: true,
+            msg: 'Contraseña cambiada'
+        })
+    } catch(error) {
+        return res.json({
+            ok: false,
+            msg: 'No se ha podido cambiar la contraseña.'
+        })
+    }
+}
+
 module.exports = {
     crearUsuario,
     loginUsuario,
-    revalidarToken
+    revalidarToken,
+    cambiarEmail,
+    cambiarPass
 }
