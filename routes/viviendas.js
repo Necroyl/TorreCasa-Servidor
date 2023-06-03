@@ -1,20 +1,5 @@
 const express = require('express');
-const fs = require('fs');
-const multer = require("multer");
 const Vivienda = require(__dirname + '/../models/Vivienda');
-
-// Librería multer para subida de ficheros
-// let storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, "public/uploads");
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, Date.now() + "_" + file.originalname);
-//     },
-// });
-
-// let upload = multer({ storage: storage });
-
 
 let router = express.Router();
 
@@ -67,7 +52,6 @@ router.post('/nueva', (req, res) =>{
             body: req.body
         })
     }
-    
 })
 
 router.delete('/:id', (req, res) => {

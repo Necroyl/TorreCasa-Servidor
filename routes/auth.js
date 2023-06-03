@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 const { crearUsuario, revalidarToken, loginUsuario, cambiarEmail, cambiarPass } = require('../controllers/auth');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
+const Usuario = require(__dirname + '/../models/Usuario');
 
 const router = Router();
 
@@ -32,6 +33,15 @@ router.post('/newPass', [
     check('password', 'La contraseña debe tener más de 6 caracteres').isLength({min:6}),
     validarCampos
 ], cambiarPass)
+
+// Datos de usuario
+router.get('/usuario/:id', (req, res) => {
+    Usuario.findById({_id: req.params['id']}).then( usuario => {
+        res.status(200).send({ ok: true, usuario });
+    }).catch( error => {
+        res.status(400).send({ ok:false, error: 'No se han encontrado datos de usuario' })
+    })
+})
 
 // Validar token
 router.get('/renew', validarJWT, revalidarToken);
