@@ -34,8 +34,8 @@ const crearUsuario = async(req, res = response) => {
         return res.status(201).json({
             ok: true,
             uid: dbUser.id,
-            name,
-            email,
+            name: dbUser.name,
+            email: dbUser.email,
             token
         })
 
@@ -92,18 +92,16 @@ const loginUsuario = async(req, res = response) => {
 }
 
 const revalidarToken = async(req, res = response) => {
-
     const { uid } = req;
 
     // Leer la bd
     const dbUser = await Usuario.findById( uid );
-
     // Generar el JWT
     const token = await generarJWT( uid );
 
     return res.json({
         ok: true,
-        uid, 
+        uid: dbUser.id, 
         name: dbUser.name,
         email: dbUser.email,
         token

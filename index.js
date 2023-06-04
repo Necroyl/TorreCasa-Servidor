@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { dbConnection } = require('./db/config');
 
+// const {} = require('./utils/generar_usuarios');
+// const {} = require('./utils/generar_viviendas');
+
 require('dotenv').config();
 
 // Crear el servidor/aplicación de express
@@ -26,8 +29,9 @@ app.use( cors() );
 app.use( express.json() );
 
 // Rutas
-app.use( '/api/auth', require('./routes/auth') );
-app.use('/viviendas', require('./routes/viviendas'))
+app.use('/api/auth', require('./routes/auth') );
+app.use('/viviendas', require('./routes/viviendas'));
+app.use('/formulario', require('./routes/correo'));
 
 app.listen( process.env.PORT, () => {
     console.log(`Servidor corriendo en puerto ${ 8080 }`);
