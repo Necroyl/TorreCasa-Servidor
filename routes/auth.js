@@ -37,7 +37,6 @@ router.post('/newPass', [
 // Datos de usuario
 router.get('/usuario/:id', (req, res) => {
     Usuario.findById({_id: req.params['id']}).then( (response) => {
-        console.log('response: ' + response)
         res.status(200).send({ok: true, response: response});
     }).catch( error => {
         res.status(400).send({ ok:false, error: 'No se han encontrado datos de usuario' })

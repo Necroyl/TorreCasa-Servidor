@@ -18,6 +18,7 @@ const enviarEmail = (req, res = response) => {
         html: 
             `
             <strong>Nombre:</strong> ${req.nombre} <br/>
+            <strong>Email:</strong> ${req.emailEmi}<br/>
             <strong>Mensaje:</strong> ${req.mensaje}
             `
     };
