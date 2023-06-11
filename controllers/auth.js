@@ -109,11 +109,11 @@ const revalidarToken = async(req, res = response) => {
 }
 
 const cambiarEmail = async(req, res = response ) => {
-    const {email, uid} = req.body;
+    const {email, id} = req.body;
 
     try {
         // TODO buscar si algún usuario tiene el mismo email?
-        const dbUser = await Usuario.findOne({ uid });
+        const dbUser = await Usuario.findById(id);
         dbUser.email = email;
         dbUser.save();
 
